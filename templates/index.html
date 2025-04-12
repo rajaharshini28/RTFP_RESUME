@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Sorter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Upload Resumes (Max 10)</h2>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label>Select Resume:</label>
+        <input type="file" name="resume" accept=".pdf,.docx">
+        <button type="submit">Add Resume</button>
+    </form>
+
+    {% if selected_files %}
+    <h3>Selected Resumes:</h3>
+    <ul>
+        {% for file in selected_files %}
+        <li>{{ file.filename }}</li>
+        {% endfor %}
+    </ul>
+    <form action="/" method="post">
+        <button type="submit" name="upload_all" value="true">Upload All</button>
+    </form>
+    {% endif %}
+
+    {% if candidates %}
+    <h3>Ranked Candidates</h3>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Filename</th>
+                <th>CGPA/Percentage</th>
+                <th>Extracted Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for candidate in candidates %}
+            <tr>
+                <td>{{ candidate.rank }}</td>
+                <td>{{ candidate.filename }}</td>
+                <td>{{ candidate.cgpa }}</td>
+                <td><textarea rows="5" cols="60">{{ candidate.text }}</textarea></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</body>
+</html>
